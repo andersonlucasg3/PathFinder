@@ -230,7 +230,11 @@ namespace PathFinding.AStar {
 		}
 
 		private void PrintDebugProcess(Node start, Node end, Node current) {
-			if (DebugMode == DebugMode.CONSOLE_LOG_PROGRESS) {
+			PrintDebugProcess (start, end, current, false);
+		}
+
+		private void PrintDebugProcess(Node start, Node end, Node current, bool force) {
+			if (DebugMode == DebugMode.CONSOLE_LOG_PROGRESS || force) {
 				PrintCurrentState(start, end, current);
 
 				Thread.Sleep(100);
@@ -242,7 +246,7 @@ namespace PathFinding.AStar {
 				DebugMode == DebugMode.CONSOLE_LOG_RESULT) {
 				benchmark.EndBenchmark ();
 
-				PrintDebugProcess (start, end, current);
+				PrintDebugProcess (start, end, current, true);
 
 				Console.WriteLine();
 				Console.WriteLine();

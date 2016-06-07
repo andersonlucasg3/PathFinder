@@ -112,7 +112,7 @@ namespace PathFinding.AStar {
 				if (current.Equals(end)) {
 					List<Node> path = ReconstructPath (current);
 
-					PrintDebugResult (path.Count);
+					PrintDebugResult (path.Count, start, end, current);
 
 					DispatchFinish(path);
 					runnerThread.Abort ();
@@ -237,10 +237,12 @@ namespace PathFinding.AStar {
 			}
 		}
 
-		private void PrintDebugResult(int count) {
+		private void PrintDebugResult(int count, Node start, Node end, Node current) {
 			if (DebugMode == DebugMode.CONSOLE_LOG_PROGRESS ||
 				DebugMode == DebugMode.CONSOLE_LOG_RESULT) {
 				benchmark.EndBenchmark ();
+
+				PrintDebugProcess (start, end, current);
 
 				Console.WriteLine();
 				Console.WriteLine();

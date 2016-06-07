@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace PathFinding.AStar {
 	public class PathFinder {
@@ -108,7 +107,7 @@ namespace PathFinding.AStar {
 					
 				closedQueue.Enqueue(openQueue.Dequeue());
 
-				Parallel.For(current.Row - 1, current.Row + 2, (int row) => {
+				for (int row = current.Row - 1; row <= current.Row + 1; row++) {
 					if (!(row < 0 || row == map.Length)) {
 						for (int column = current.Column - 1; column <= current.Column + 1; column++) {
 							if (!(column < 0 || column == map[row].Length)) {
@@ -116,8 +115,8 @@ namespace PathFinding.AStar {
 
 								bool shouldComplete = true;
 								if (neighbor.Block == Block.WALL_BLOCK ||
-								   (!CanJump && neighbor.Block == Block.JUMPABLE_BLOCK) ||
-								   closedQueue.Contains(neighbor)) {
+								    (!CanJump && neighbor.Block == Block.JUMPABLE_BLOCK) ||
+								    closedQueue.Contains(neighbor)) {
 									shouldComplete = false;
 								}
 
@@ -138,7 +137,7 @@ namespace PathFinding.AStar {
 							}
 						}
 					}
-				});
+				}
 			}
 
 			DispatchFinish(new List<Node>());

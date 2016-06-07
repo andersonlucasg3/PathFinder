@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PathFinding", "PathFinding\PathFinding.csproj", "{0E28DF62-EA67-47DB-A7DB-66C0B0C7B263}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PathFindingTest", "PathFindingTest\PathFindingTest.csproj", "{F39DD253-5EA1-43B0-88EE-F066B130A218}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0E28DF62-EA67-47DB-A7DB-66C0B0C7B263}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E28DF62-EA67-47DB-A7DB-66C0B0C7B263}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E28DF62-EA67-47DB-A7DB-66C0B0C7B263}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E28DF62-EA67-47DB-A7DB-66C0B0C7B263}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F39DD253-5EA1-43B0-88EE-F066B130A218}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F39DD253-5EA1-43B0-88EE-F066B130A218}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F39DD253-5EA1-43B0-88EE-F066B130A218}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F39DD253-5EA1-43B0-88EE-F066B130A218}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

@@ -37,6 +37,8 @@
     <Compile Include="Node.cs" />
     <Compile Include="Heuristic.cs" />
     <Compile Include="PathEventArgs.cs" />
+    <Compile Include="DebugMode.cs" />
+    <Compile Include="DebugBenchmark.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

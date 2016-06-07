@@ -190,7 +190,7 @@ namespace PathFinding.AStar {
 						break;
 
 					case Block.WALL_BLOCK:
-						s[i][j] = 'B';
+						s[i][j] = '|';
 						break;
 					}
 				}

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PathFinding.AStar {
 	public class PathFinder {
-		public static bool DebugMode = false;
+		public static DebugMode DebugMode = DebugMode.DISABLED;
 
 		private const int OrthogonalValue = 10;
 		private const int DiagonalValue = 14;
@@ -14,6 +14,7 @@ namespace PathFinding.AStar {
 		private Heuristic heuristic;
 
 		private Thread runnerThread;
+		private DebugBenchmark benchmark;
 
 		public Heuristic Heuristic {
 			get { return heuristic; }
@@ -48,6 +49,11 @@ namespace PathFinding.AStar {
 		public void FindPath(Node start, Node end) {
 			if (runnerThread != null) {
 				runnerThread.Abort ();
+			}
+
+			if (DebugMode != DebugMode.DISABLED) {
+				benchmark = new DebugBenchmark ();
+				benchmark.StartBenchmark ();
 			}
 
 			runnerThread = new Thread(new ThreadStart(delegate() {
@@ -97,18 +103,18 @@ namespace PathFinding.AStar {
 			while (openQueue.Count > 0) {
 				Node current = openQueue.Peek();
 
-				if (DebugMode) {
-					PrintCurrentState(start, end, current);
-
-					Thread.Sleep(100);
-				}
+				PrintDebugProcess (start, end, current);
 
 				if (current == null) {
 					break;
 				}
 
 				if (current.Equals(end)) {
-					DispatchFinish(ReconstructPath(current));
+					List<Node> path = ReconstructPath (current);
+
+					PrintDebugResult (path.Count);
+
+					DispatchFinish(path);
 					runnerThread.Abort ();
 					runnerThread = null;
 					return;
@@ -220,6 +226,30 @@ namespace PathFinding.AStar {
 			Console.Clear();
 			foreach (char[] cs in s) {
 				Console.WriteLine(cs);
+			}
+		}
+
+		private void PrintDebugProcess(Node start, Node end, Node current) {
+			if (DebugMode == DebugMode.CONSOLE_LOG_PROCESS) {
+				PrintCurrentState(start, end, current);
+
+				Thread.Sleep(100);
+			}
+		}
+
+		private void PrintDebugResult(int count) {
+			if (DebugMode == DebugMode.CONSOLE_LOG_PROCESS ||
+				DebugMode == DebugMode.CONSOLE_LOG_RESULT) {
+				benchmark.EndBenchmark ();
+
+				Console.WriteLine();
+				Console.WriteLine();
+				Console.WriteLine(String.Format("Path found {0}", count > 0));
+
+				Console.WriteLine();
+				Console.WriteLine();
+
+				Console.WriteLine(String.Format("Took {0} to complete", benchmark.Duration));
 			}
 		}
 	}

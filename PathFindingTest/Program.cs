@@ -22,24 +22,13 @@ namespace PathFindingTest {
 
 			PathFinder finder = new PathFinder(blocks);
 			#if DEBUG
-			PathFinder.DebugMode = true;
+			PathFinder.DebugMode = DebugMode.CONSOLE_LOG_RESULT;
 			#endif
 
 			finder.CanJump = false;
 			finder.WalkDiagonals = true;
 
-			double startTime = CreatedEpoch();
-
 			finder.FindPathFinished += (object sender, PathEventArgs e) => {
-				Console.WriteLine();
-				Console.WriteLine();
-				Console.WriteLine(String.Format("Path found {0}", e.Path.Count > 0));
-
-				Console.WriteLine();
-				Console.WriteLine();
-
-				Console.WriteLine(String.Format("Took {0} to complete", CreatedEpoch() - startTime));
-
 				finishProgram = true;
 			};
 
@@ -47,13 +36,6 @@ namespace PathFindingTest {
 
 			while (!finishProgram)
 				;
-		}
-
-		public static double CreatedEpoch()
-		{
-			DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime();
-			TimeSpan span = (DateTime.Now.ToLocalTime() - epoch);
-			return span.TotalSeconds;
 		}
 	}
 }

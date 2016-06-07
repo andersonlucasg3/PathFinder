@@ -13,6 +13,8 @@ namespace PathFinding.AStar {
 		private Node[][] map;
 		private Heuristic heuristic;
 
+		private Thread runnerThread;
+
 		public Heuristic Heuristic {
 			get { return heuristic; }
 			set { heuristic = value; }
@@ -44,9 +46,14 @@ namespace PathFinding.AStar {
 		}
 
 		public void FindPath(Node start, Node end) {
-			new Thread(new ThreadStart(delegate() {
+			if (runnerThread != null) {
+				runnerThread.Abort ();
+			}
+
+			runnerThread = new Thread(new ThreadStart(delegate() {
 				StartPathFinding(start, end);
-			})).Start();
+			}));
+			runnerThread.Start ();
 		}
 
 		private void GenerateNodeMap(Block[][] blocks) {
@@ -102,6 +109,8 @@ namespace PathFinding.AStar {
 
 				if (current.Equals(end)) {
 					DispatchFinish(ReconstructPath(current));
+					runnerThread.Abort ();
+					runnerThread = null;
 					return;
 				}
 					

@@ -218,7 +218,9 @@ namespace PathFinding.AStar {
 			if (current != null) {
 				Node c = current;
 				while (c.Parent != null) {
-					s[c.Row][c.Column] = '*';
+					if (!c.Equals(start) && !c.Equals(end)) {
+						s[c.Row][c.Column] = '*';
+					}
 					c = c.Parent;
 				}
 			}

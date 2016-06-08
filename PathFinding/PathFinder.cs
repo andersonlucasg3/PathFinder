@@ -265,12 +265,9 @@ namespace PathFinding.AStar {
 				PrintDebugProcess (start, end, current, true);
 
 				Console.WriteLine();
-				Console.WriteLine();
 				Console.WriteLine(String.Format("Path found {0}", count > 0));
 
 				Console.WriteLine();
-				Console.WriteLine();
-
 				Console.WriteLine(String.Format("Took {0} to complete", benchmark.Duration));
 			}
 		}

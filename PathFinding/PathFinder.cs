@@ -197,7 +197,26 @@ namespace PathFinding.AStar {
 		}
 
 		private int HeuristicEstimate(Node start, Node end) {
-			return (System.Math.Abs(start.Column - end.Column) * OrthogonalValue + System.Math.Abs(start.Row - end.Row) * OrthogonalValue);
+			switch (heuristic) {
+			case Heuristic.Manhattan:
+				return (System.Math.Abs(start.Column - end.Column) * OrthogonalValue + System.Math.Abs(start.Row - end.Row) * OrthogonalValue);
+
+			case Heuristic.Diagonal:
+				{
+					int dx = Math.Abs(start.Column - end.Column);
+					int dy = Math.Abs(start.Row - end.Row);
+					return OrthogonalValue * (dx + dy) + (DiagonalValue - 2 * OrthogonalValue) * Math.Min(dx, dy);
+				}
+
+			case Heuristic.Euclidean:
+				{
+					int dx = Math.Abs(start.Column - end.Column);
+					int dy = Math.Abs(start.Row - end.Row);
+					return (int)((double)OrthogonalValue * Math.Sqrt(dx * dx + dy * dy));
+				}
+			}
+
+			return 0;
 		}
 
 		private void PrintCurrentState(Node start, Node end, Node current) {

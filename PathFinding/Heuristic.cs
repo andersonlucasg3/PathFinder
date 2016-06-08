@@ -2,7 +2,9 @@
 
 namespace PathFinding.AStar {
 	public enum Heuristic {
-		Manhattan
+		Manhattan,
+		Diagonal,
+		Euclidean
 	}
 }
 

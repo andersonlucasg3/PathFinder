@@ -155,6 +155,8 @@ namespace PathFinding.AStar {
 				}
 			}
 
+			PrintDebugResult(0, start, end, null);
+
 			DispatchFinish(new List<Node>());
 		}
 

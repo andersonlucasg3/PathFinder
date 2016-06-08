@@ -122,11 +122,54 @@ namespace PathFinding.AStar {
 					
 				closedQueue.Enqueue(openQueue.Dequeue());
 
+				LoopNeighbors(ref current, ref end, ref closedQueue, ref openQueue); 
 			}
 
 			PrintDebugResult(0, start, end, null);
 
 			DispatchFinish(new List<Node>());
+		}
+
+		private void LoopNeighbors(ref Node current, ref Node end, ref Queue<Node> closedQueue, ref Queue<Node> openQueue) {
+			for (int row = current.Row - 1; row <= current.Row + 1; row++) {
+				if (!(row < 0 || row == map.Length)) {
+					for (int column = current.Column - 1; column <= current.Column + 1; column++) {
+						if (!(column < 0 || column == map[row].Length)) {
+							if (ShouldSkipDiagonal(current.Row, current.Column, row, column)) {
+								continue;
+							}
+
+							Node neighbor = map[row][column];
+
+							bool shouldComplete = true;
+							if (neighbor.Block == Block.WALL_BLOCK ||
+							    (!CanJump && neighbor.Block == Block.JUMPABLE_BLOCK) ||
+							    closedQueue.Contains(neighbor)) {
+								shouldComplete = false;
+							}
+
+							if (shouldComplete) {
+								CalculateGScore(ref neighbor, current);
+								CalculateFScore(ref neighbor, current, end);
+
+								if (!openQueue.Contains(neighbor)) {
+									openQueue.Enqueue(neighbor);
+								} else if (neighbor.GScore >= current.GScore) {
+									shouldComplete = false;
+								}
+
+								if (shouldComplete) {
+									neighbor.Parent = current;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		private bool ShouldSkipDiagonal(int currRow, int currColumn, int row, int column) {
+			return !WalkDiagonals && (Math.Abs(currRow - row) + Math.Abs(currColumn - column) == 2);
 		}
 
 		private void CalculateGScore(ref Node neighbor, Node current) {

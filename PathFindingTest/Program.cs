@@ -10,7 +10,10 @@ namespace PathFindingTest {
 				blocks[i] = new Block[20];
 				for (int j = 0; j < blocks[i].Length; j++) {
 					if ((i == 1 && j > 0 && j < blocks[i].Length - 1) ||
-					    (i == blocks.Length - 2 && j > 0 && j < blocks[i].Length - 1)) {
+					    (i == blocks.Length - 2 && j > 0 && j < blocks[i].Length - 1) ||
+					    (i == blocks.Length / 2 && j > 0 && j < blocks[i].Length - 1) ||
+					    (j == blocks[i].Length / 2 && i > 0 && i < blocks[i].Length - 1) && 
+					    i != blocks.Length / 4) {
 						blocks[i][j] = Block.WALL_BLOCK;
 					} else {
 						blocks[i][j] = Block.EMPTY_BLOCK;
@@ -32,7 +35,7 @@ namespace PathFindingTest {
 				finishProgram = true;
 			};
 
-			finder.FindPath(new Node(0, 0), new Node(blocks.Length - 1, blocks[0].Length - 1));
+			finder.FindPath(new Node(0, 0), new Node(blocks.Length / 4, blocks[0].Length * 3 / 4));
 
 			while (!finishProgram)
 				;

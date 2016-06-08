@@ -122,37 +122,6 @@ namespace PathFinding.AStar {
 					
 				closedQueue.Enqueue(openQueue.Dequeue());
 
-				for (int row = current.Row - 1; row <= current.Row + 1; row++) {
-					if (!(row < 0 || row == map.Length)) {
-						for (int column = current.Column - 1; column <= current.Column + 1; column++) {
-							if (!(column < 0 || column == map[row].Length)) {
-								Node neighbor = map[row][column];
-
-								bool shouldComplete = true;
-								if (neighbor.Block == Block.WALL_BLOCK ||
-								    (!CanJump && neighbor.Block == Block.JUMPABLE_BLOCK) ||
-								    closedQueue.Contains(neighbor)) {
-									shouldComplete = false;
-								}
-
-								if (shouldComplete) {
-									CalculateGScore(ref neighbor, current);
-									CalculateFScore(ref neighbor, current, end);
-
-									if (!openQueue.Contains(neighbor)) {
-										openQueue.Enqueue(neighbor);
-									} else if (neighbor.GScore >= current.GScore) {
-										shouldComplete = false;
-									}
-
-									if (shouldComplete) {
-										neighbor.Parent = current;
-									}
-								}
-							}
-						}
-					}
-				}
 			}
 
 			PrintDebugResult(0, start, end, null);

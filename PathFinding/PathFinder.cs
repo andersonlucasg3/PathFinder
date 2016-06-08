@@ -131,39 +131,53 @@ namespace PathFinding.AStar {
 		}
 
 		private void LoopNeighbors(ref Node current, ref Node end, ref Queue<Node> closedQueue, ref Queue<Node> openQueue) {
-			for (int row = current.Row - 1; row <= current.Row + 1; row++) {
+			int rowInit = current.Row - 1;
+			int rowEnd = current.Row + 1;
+			int rowStep = 1;
+
+			int columnInit = current.Column - 1;
+			int columnEnd = current.Column + 1;
+			int columnStep = 1;
+
+			for (int row = rowInit; row <= rowEnd; row += rowStep) {
 				if (!(row < 0 || row == map.Length)) {
-					for (int column = current.Column - 1; column <= current.Column + 1; column++) {
+					
+					for (int column = columnInit; column <= columnEnd; column += columnStep) {
 						if (!(column < 0 || column == map[row].Length)) {
-							if (ShouldSkipDiagonal(current.Row, current.Column, row, column)) {
-								continue;
-							}
-
-							Node neighbor = map[row][column];
-
-							bool shouldComplete = true;
-							if (neighbor.Block == Block.WALL_BLOCK ||
-							    (!CanJump && neighbor.Block == Block.JUMPABLE_BLOCK) ||
-							    closedQueue.Contains(neighbor)) {
-								shouldComplete = false;
-							}
-
-							if (shouldComplete) {
-								CalculateGScore(ref neighbor, current);
-								CalculateFScore(ref neighbor, current, end);
-
-								if (!openQueue.Contains(neighbor)) {
-									openQueue.Enqueue(neighbor);
-								} else if (neighbor.GScore >= current.GScore) {
-									shouldComplete = false;
-								}
-
-								if (shouldComplete) {
-									neighbor.Parent = current;
-								}
-							}
+							
+							ProcessCurrentNode(row, column, ref current, ref end, ref closedQueue, ref openQueue);
 						}
 					}
+				}
+			}
+		}
+
+		private void ProcessCurrentNode(int row, int column, ref Node current, ref Node end, ref Queue<Node> closedQueue, ref Queue<Node> openQueue) {
+			if (ShouldSkipDiagonal(current.Row, current.Column, row, column)) {
+				return;
+			}
+
+			Node neighbor = map[row][column];
+
+			bool shouldComplete = true;
+			if (neighbor.Block == Block.WALL_BLOCK ||
+                (!CanJump && neighbor.Block == Block.JUMPABLE_BLOCK) ||
+                closedQueue.Contains(neighbor)) {
+				shouldComplete = false;
+			}
+
+			if (shouldComplete) {
+				CalculateGScore(ref neighbor, current);
+				CalculateFScore(ref neighbor, current, end);
+
+				if (!openQueue.Contains(neighbor)) {
+					openQueue.Enqueue(neighbor);
+				} else if (neighbor.GScore >= current.GScore) {
+					shouldComplete = false;
+				}
+
+				if (shouldComplete) {
+					neighbor.Parent = current;
 				}
 			}
 		}

@@ -131,20 +131,10 @@ namespace PathFinding.AStar {
 		}
 
 		private void LoopNeighbors(ref Node current, ref Node end, ref Queue<Node> closedQueue, ref Queue<Node> openQueue) {
-			int rowInit = current.Row - 1;
-			int rowEnd = current.Row + 1;
-			int rowStep = 1;
-
-			int columnInit = current.Column - 1;
-			int columnEnd = current.Column + 1;
-			int columnStep = 1;
-
-			for (int row = rowInit; row <= rowEnd; row += rowStep) {
+			for (int row = current.Row - 1; row <= current.Row + 1; row++) {
 				if (!(row < 0 || row == map.Length)) {
-					
-					for (int column = columnInit; column <= columnEnd; column += columnStep) {
+					for (int column = current.Column - 1; column <= current.Column + 1; column++) {
 						if (!(column < 0 || column == map[row].Length)) {
-							
 							ProcessCurrentNode(row, column, ref current, ref end, ref closedQueue, ref openQueue);
 						}
 					}

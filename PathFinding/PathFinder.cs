@@ -220,7 +220,7 @@ namespace PathFinding.AStar {
 		private int HeuristicEstimate(Node start, Node end) {
 			switch (heuristic) {
 			case Heuristic.Manhattan:
-				return (System.Math.Abs(start.Column - end.Column) * OrthogonalValue + System.Math.Abs(start.Row - end.Row) * OrthogonalValue);
+				return OrthogonalValue * (Math.Abs(start.Column - end.Column) + Math.Abs(start.Row - end.Row));
 
 			case Heuristic.Diagonal:
 				{

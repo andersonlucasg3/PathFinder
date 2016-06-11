@@ -4,6 +4,8 @@ using PathFinding.AStar;
 
 namespace PathFindingTest {
 	class MainClass {
+		private static PathFinder finder;
+
 		public static void Main(string[] args) {
 			Block[][] blocks = new Block[20][];
 			for (int i = 0; i < blocks.Length; i++) {
@@ -21,24 +23,29 @@ namespace PathFindingTest {
 				}
 			}
 
-			bool finishProgram = false;
+			finder = new PathFinder(blocks);
 
-			PathFinder finder = new PathFinder(blocks);
 			#if DEBUG
 			PathFinder.DebugMode = DebugMode.CONSOLE_LOG_RESULT;
 			#endif
 
 			finder.CanJump = false;
 			finder.WalkDiagonals = true;
+			finder.Heuristic = Heuristic.Diagonal;
 
-			finder.FindPathFinished += (object sender, PathEventArgs e) => {
-				finishProgram = true;
-			};
+			StartFindPath(0, 0, blocks.Length * 3 / 4, blocks.Length * 3 / 4);
 
-			finder.FindPath(new Node(0, 0), new Node(blocks.Length / 4, blocks[0].Length * 3 / 4));
+			finder.UpdateMap(Block.WALL_BLOCK, 5, 9);
+			finder.UpdateMap(Block.WALL_BLOCK, 10, blocks.Length - 1);
 
-			while (!finishProgram)
-				;
+			StartFindPath(0, 0, blocks.Length * 3 / 4, blocks.Length * 3 / 4);
+			//StartFindPath(blocks.Length * 3 / 4, blocks.Length - 1, blocks.Length / 4, blocks.Length * 2 / 4);
+		}
+
+		private static void StartFindPath(int startX, int startY, int endX, int endY) {
+			Node n1 = new Node(startX, startY);
+			Node n2 = new Node(endX, endY);
+			finder.FindPathSync(n1, n2);
 		}
 	}
 }

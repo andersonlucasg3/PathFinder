@@ -193,14 +193,14 @@ namespace PathFinding.AStar {
 			return !WalkDiagonals && (Math.Abs(currRow - row) + Math.Abs(currColumn - column) == 2);
 		}
 
-		private void CalculateGScore(ref Node neighbor, Node current) {
-			int horizontal = System.Math.Abs(current.Column - neighbor.Column);
-			int vertical = System.Math.Abs(current.Row - neighbor.Row);
+		private int CalculateGScore(Node neighbor, Node current) {
+			int horizontal = Math.Abs(current.Column - neighbor.Column);
+			int vertical = Math.Abs(current.Row - neighbor.Row);
 			if (WalkDiagonals) {
-				neighbor.GScore = current.GScore + ((horizontal != 0 && vertical != 0) ? DiagonalValue : OrthogonalValue);
-			} else {
-				neighbor.GScore = current.GScore + OrthogonalValue;
+				return current.GScore + ((horizontal != 0 && vertical != 0) ? DiagonalValue : OrthogonalValue);
 			}
+
+			return current.GScore + OrthogonalValue;
 		}
 
 		private void CalculateFScore(ref Node neighbor, Node current, Node end) {

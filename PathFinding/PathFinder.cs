@@ -231,11 +231,9 @@ namespace PathFinding.AStar {
 				return DiagonalValue * xDist + (yDist - xDist) * OrthogonalValue;
 
 			case Heuristic.Euclidean:
-				{
-					int dx = Math.Abs(start.Column - end.Column);
-					int dy = Math.Abs(start.Row - end.Row);
-					return (int)((double)OrthogonalValue * Math.Sqrt(dx * dx + dy * dy));
-				}
+				int dx = Math.Abs(start.Column - end.Column);
+				int dy = Math.Abs(start.Row - end.Row);
+				return (int)(OrthogonalValue * Math.Sqrt(dx * dx + dy * dy));
 			}
 
 			return 0;

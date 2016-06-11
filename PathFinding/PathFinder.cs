@@ -59,7 +59,11 @@ namespace PathFinding.AStar {
 			}
 
 			runnerThread = new Thread(new ThreadStart(delegate() {
-				StartPathFinding(start, end);
+				List<Node> path = StartPathFinding(start, end);
+
+				DispatchFinish(path);
+				runnerThread.Abort();
+				runnerThread = null;
 			}));
 			runnerThread.Start ();
 		}
@@ -89,7 +93,7 @@ namespace PathFinding.AStar {
 			}
 		}
 
-		private void StartPathFinding(Node start, Node end) {
+		private List<Node> StartPathFinding(Node start, Node end) {
 			if (start.Block == Block.WALL_BLOCK || end.Block == Block.WALL_BLOCK) {
 				DispatchFinish(new List<Node>());
 			}
@@ -112,14 +116,12 @@ namespace PathFinding.AStar {
 				}
 
 				if (current.Equals(end)) {
-					List<Node> path = ReconstructPath (current);
+					end.Parent = current;
+					List<Node> path = ReconstructPath(end);
 
 					PrintDebugResult (path.Count, start, end, current);
 
-					DispatchFinish(path);
-					runnerThread.Abort ();
-					runnerThread = null;
-					return;
+					return path;
 				}
 					
 				closedQueue.Enqueue(openQueue.Dequeue());
@@ -129,7 +131,7 @@ namespace PathFinding.AStar {
 
 			PrintDebugResult(0, start, end, null);
 
-			DispatchFinish(new List<Node>());
+			return new List<Node>();
 		}
 
 		private void LoopNeighbors(ref Node current, ref Node end, ref Queue<Node> closedQueue, ref Queue<Node> openQueue) {

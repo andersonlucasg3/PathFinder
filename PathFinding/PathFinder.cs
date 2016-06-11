@@ -162,34 +162,27 @@ namespace PathFinding.AStar {
 			}
 		}
 
-		private void ProcessCurrentNode(int row, int column, ref Node current, ref Node end, ref Queue<Node> closedQueue, ref Queue<Node> openQueue) {
-			if (ShouldSkipDiagonal(current.Row, current.Column, row, column)) {
+		private void ProcessCurrentNode(int row, int column, ref Node current, ref Node end, 
+		                                ref Queue<Node> closedQueue, ref Queue<Node> openQueue) {
+			Node neighbor = map[row][column];
+
+			if (neighbor.Block == Block.WALL_BLOCK ||
+				(!CanJump && neighbor.Block == Block.JUMPABLE_BLOCK) || 
+			    closedQueue.Contains(neighbor)) {
 				return;
 			}
 
-			Node neighbor = map[row][column];
+			int tentativeGScore = CalculateGScore(neighbor, current);
 
-			bool shouldComplete = true;
-			if (neighbor.Block == Block.WALL_BLOCK ||
-                (!CanJump && neighbor.Block == Block.JUMPABLE_BLOCK) ||
-                closedQueue.Contains(neighbor)) {
-				shouldComplete = false;
+			if (!openQueue.Contains(neighbor)) {
+				openQueue.Enqueue(neighbor);
+			} else if (tentativeGScore >= neighbor.GScore) {
+				return;
 			}
 
-			if (shouldComplete) {
-				CalculateGScore(ref neighbor, current);
-				CalculateFScore(ref neighbor, current, end);
-
-				if (!openQueue.Contains(neighbor)) {
-					openQueue.Enqueue(neighbor);
-				} else if (neighbor.GScore >= current.GScore) {
-					shouldComplete = false;
-				}
-
-				if (shouldComplete) {
-					neighbor.Parent = current;
-				}
-			}
+			neighbor.Parent = current;
+			neighbor.GScore = tentativeGScore;
+			neighbor.FScore = neighbor.GScore + HeuristicEstimate(neighbor, end);
 		}
 
 		private bool ShouldSkipDiagonal(int currRow, int currColumn, int row, int column) {

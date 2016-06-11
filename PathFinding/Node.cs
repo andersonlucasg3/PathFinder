@@ -53,7 +53,11 @@ namespace PathFinding {
 				Node other = obj as Node;
 				return Column == other.Column && Row == other.Row;
 			}
-			return base.Equals(obj);
+			return ReferenceEquals(this, obj);
+		}
+
+		public override int GetHashCode() {
+			return base.GetHashCode();
 		}
 	}
 }

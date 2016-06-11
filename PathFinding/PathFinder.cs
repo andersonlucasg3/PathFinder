@@ -208,13 +208,16 @@ namespace PathFinding.AStar {
 		}
 
 		private List<Node> ReconstructPath(Node endNode) {
-			List<Node> totalPath = new List<Node>();
-			while (endNode.Parent != null) {
-				totalPath.Add(endNode);
-				endNode = endNode.Parent;
-			}
-			totalPath.Reverse();
-			return totalPath;
+			if (endNode.Parent != null) {
+				List<Node> totalPath = new List<Node>();
+				while (endNode.Parent != null) {
+					totalPath.Add(endNode);
+					endNode = endNode.Parent;
+				}
+				totalPath.Reverse();
+				return totalPath;
+			} 
+			return null;
 		}
 
 		private int HeuristicEstimate(Node start, Node end) {

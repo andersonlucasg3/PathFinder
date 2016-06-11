@@ -48,7 +48,7 @@ namespace PathFinding.AStar {
 			}
 		}
 
-		public void FindPath(Node start, Node end) {
+		public void FindPathAsync(Node start, Node end) {
 			if (runnerThread != null) {
 				runnerThread.Abort ();
 			}

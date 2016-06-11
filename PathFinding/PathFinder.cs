@@ -118,7 +118,7 @@ namespace PathFinding.AStar {
 			while (openQueue.Count > 0) {
 				Node current = openQueue.Peek();
 
-				PrintDebugProcess (start, end, current);
+				PrintDebugProcess (start, end, current, closedQueue);
 
 				if (current == null) {
 					break;
@@ -128,7 +128,7 @@ namespace PathFinding.AStar {
 					end.Parent = current;
 					List<Node> path = ReconstructPath(end);
 
-					PrintDebugResult (path.Count, start, end, current);
+					PrintDebugResult (path.Count, start, end, current, closedQueue);
 
 					return path;
 				}
@@ -138,7 +138,7 @@ namespace PathFinding.AStar {
 				LoopNeighbors(ref current, ref end, ref closedQueue, ref openQueue); 
 			}
 
-			PrintDebugResult(0, start, end, null);
+			PrintDebugResult(0, start, end, null, closedQueue);
 
 			return new List<Node>();
 		}

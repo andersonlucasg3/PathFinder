@@ -236,7 +236,7 @@ namespace PathFinding.AStar {
 			return 0;
 		}
 
-		private void PrintCurrentState(Node start, Node end, Node current) {
+		private void PrintCurrentState(Node start, Node end, Node current, Queue<Node> closedQueue) {
 			int rows = map.Length;
 			int columns = map[0].Length;
 
@@ -257,6 +257,10 @@ namespace PathFinding.AStar {
 					case Block.WALL_BLOCK:
 						s[i][j] = '|';
 						break;
+					}
+
+					if (closedQueue.Contains(map[i][j])) {
+						s[i][j] = 'C';
 					}
 				}
 			}
@@ -281,30 +285,30 @@ namespace PathFinding.AStar {
 			}
 		}
 
-		private void PrintDebugProcess(Node start, Node end, Node current) {
-			PrintDebugProcess (start, end, current, false);
+		private void PrintDebugProcess(Node start, Node end, Node current, Queue<Node> closedQueue) {
+			PrintDebugProcess (start, end, current, closedQueue, false);
 		}
 
-		private void PrintDebugProcess(Node start, Node end, Node current, bool force) {
+		private void PrintDebugProcess(Node start, Node end, Node current, Queue<Node> closedQueue, bool force) {
 			if (DebugMode == DebugMode.CONSOLE_LOG_PROGRESS || force) {
-				PrintCurrentState(start, end, current);
+				PrintCurrentState(start, end, current, closedQueue);
 
 				Thread.Sleep(100);
 			}
 		}
 
-		private void PrintDebugResult(int count, Node start, Node end, Node current) {
+		private void PrintDebugResult(int count, Node start, Node end, Node current, Queue<Node> closedQueue) {
 			if (DebugMode == DebugMode.CONSOLE_LOG_PROGRESS ||
 				DebugMode == DebugMode.CONSOLE_LOG_RESULT) {
 				benchmark.EndBenchmark ();
 
-				PrintDebugProcess (start, end, current, true);
+				PrintDebugProcess (start, end, current, closedQueue, true);
 
 				Console.WriteLine();
-				Console.WriteLine(String.Format("Path found {0}", count > 0));
+				Console.WriteLine(string.Format("Path found {0}", count > 0));
 
 				Console.WriteLine();
-				Console.WriteLine(String.Format("Took {0} to complete", benchmark.Duration));
+				Console.WriteLine(string.Format("Took {0} to complete", benchmark.Duration));
 			}
 		}
 	}

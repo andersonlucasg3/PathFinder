@@ -10,7 +10,7 @@ namespace PathFinding.AStar {
 		public static DebugMode DebugMode = DebugMode.DISABLED;
 
 		private const int OrthogonalValue = 10;
-		private const int DiagonalValue = 14;
+		private const int DiagonalValue = 15;
 
 		private Node[][] map;
 		private Heuristic heuristic;

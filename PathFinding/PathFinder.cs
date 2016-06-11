@@ -68,6 +68,15 @@ namespace PathFinding.AStar {
 			runnerThread.Start ();
 		}
 
+		public List<Node> FindPathSync(Node start, Node end) {
+			if (DebugMode != DebugMode.DISABLED) {
+				benchmark = new DebugBenchmark();
+				benchmark.StartBenchmark();
+			}
+
+			return StartPathFinding(start, end);
+		}
+
 		private void GenerateNodeMap(Block[][] blocks) {
 			int rows = blocks.Length;
 			int columns = blocks[0].Length;

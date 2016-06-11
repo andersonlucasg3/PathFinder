@@ -5,6 +5,8 @@ using System.Text;
 
 namespace PathFinding.AStar {
 	public class PathFinder {
+		private delegate void LoopHandler (Node neighbor);
+
 		public static DebugMode DebugMode = DebugMode.DISABLED;
 
 		private const int OrthogonalValue = 10;

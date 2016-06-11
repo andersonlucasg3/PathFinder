@@ -223,11 +223,12 @@ namespace PathFinding.AStar {
 				return OrthogonalValue * (Math.Abs(start.Column - end.Column) + Math.Abs(start.Row - end.Row));
 
 			case Heuristic.Diagonal:
-				{
-					int dx = Math.Abs(start.Column - end.Column);
-					int dy = Math.Abs(start.Row - end.Row);
-					return OrthogonalValue * (dx + dy) + (DiagonalValue - 2 * OrthogonalValue) * Math.Min(dx, dy);
-				}
+				int xDist = Math.Abs(start.Column - end.Column);
+				int yDist = Math.Abs(start.Row - end.Row);
+				if (xDist > yDist) {
+					return DiagonalValue * yDist + (xDist - yDist) * OrthogonalValue;
+				} 
+				return DiagonalValue * xDist + (yDist - xDist) * OrthogonalValue;
 
 			case Heuristic.Euclidean:
 				{

@@ -135,7 +135,10 @@ namespace PathFinding.AStar {
 					
 				closedQueue.Enqueue(openQueue.Dequeue());
 
-				LoopNeighbors(ref current, ref end, ref closedQueue, ref openQueue); 
+				LoopNeighbors(current, (neighbor) => {
+					ProcessCurrentNode(neighbor.Row, neighbor.Column, ref current, ref end,
+											   ref closedQueue, ref openQueue);
+				}); 
 			}
 
 			PrintDebugResult(0, start, end, null, closedQueue);
